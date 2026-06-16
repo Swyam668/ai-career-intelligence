@@ -1,0 +1,49 @@
+feature,coefficient
+cat__job_title_AI Engineer,28410.16396345508
+cat__job_title_Backend Developer,-6597.937823129497
+cat__job_title_Business Analyst,-23489.202273607432
+cat__job_title_Cloud Engineer,6645.814626942013
+cat__job_title_Cybersecurity Analyst,3310.4463143366643
+cat__job_title_Data Analyst,-25821.385834952198
+cat__job_title_Data Scientist,939.3570546487022
+cat__job_title_DevOps Engineer,4029.694719983785
+cat__job_title_Frontend Developer,-12708.235220797334
+cat__job_title_Machine Learning Engineer,17192.105015680256
+cat__job_title_Product Manager,12048.600686299425
+cat__job_title_Software Engineer,-3959.4212288594485
+cat__education_level_Bachelor,-3338.8897850057574
+cat__education_level_Diploma,-8531.430131577421
+cat__education_level_High School,-13824.528660672706
+cat__education_level_Master,7450.961498067817
+cat__education_level_PhD,18243.887079188058
+cat__industry_Consulting,-75.6624970178275
+cat__industry_Education,54.42497377431673
+cat__industry_Finance,-143.30997530076425
+cat__industry_Government,-53.8550698098833
+cat__industry_Healthcare,33.45680842969865
+cat__industry_Manufacturing,-24.318974115709093
+cat__industry_Media,-66.491329791989
+cat__industry_Retail,72.91226308238033
+cat__industry_Technology,178.53739944040618
+cat__industry_Telecom,24.30640130937754
+cat__company_size_Enterprise,23976.571381215148
+cat__company_size_Large,9975.240797523169
+cat__company_size_Medium,-4360.711375172638
+cat__company_size_Small,-11366.374639662688
+cat__company_size_Startup,-18224.726163903015
+cat__location_Australia,-6337.578574654379
+cat__location_Canada,21693.69324571564
+cat__location_Germany,7708.4907663547965
+cat__location_India,-48081.02141684278
+cat__location_Netherlands,-6472.457847014123
+cat__location_Remote,-6349.941222243578
+cat__location_Singapore,-6437.625143552016
+cat__location_Sweden,-6380.197875606738
+cat__location_UK,14983.507635269762
+cat__location_USA,35673.13043257339
+cat__remote_work_Hybrid,-1856.7437194618149
+cat__remote_work_No,-1609.007365569523
+cat__remote_work_Yes,3465.7510850313747
+num__experience_years,2694.6601003161577
+num__skills_count,857.0264386342229
+num__certifications,1606.6213501097204
