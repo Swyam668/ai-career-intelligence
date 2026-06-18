@@ -1,0 +1,17 @@
+# Datasets
+data/raw/
+data/processed/
+
+# CSV files
+*.csv
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Virtual environments
+venv/
+.venv/
