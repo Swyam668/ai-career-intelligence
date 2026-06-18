@@ -9,11 +9,11 @@ model = joblib.load(MODEL_PATH)
 
 sample = pd.DataFrame([{
     "job_title": "Data Scientist",
-    "education_level": "Master",
+    "education_level": "Bachelor",
     "industry": "Tech",
-    "company_size": "Large",
+    "company_size": "Unknown",
     "location": "Delhi",
-    "remote_work": "Yes",
+    "remote_work": "Unknown",
     "experience_years": 5,
     "skills_count": 8,
     "certifications": 2
