@@ -3,8 +3,11 @@ import joblib
 from pipelines.inference import run_pipeline
 import os
 import pdfplumber
+import ast
 
 df = pd.read_csv("data/processed/jobs_processed.csv")
+# reconversion to set
+df["extracted_skills"] = df["extracted_skills"].apply(ast.literal_eval)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -43,5 +46,5 @@ result = run_pipeline(
 
 print(result["profile"])
 # print(result["predicted_salary"])
-print(result["recommendations"].head())
-print(result["scores"])
+print(result["recommendations"])
+# print(result["scores"])

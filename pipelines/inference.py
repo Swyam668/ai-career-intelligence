@@ -9,16 +9,18 @@ def run_pipeline(resume_text, df, vectorizer, job_vectors, model):
 
     # salary = predict_salary(user_profile, model)
 
-    jobs, scores = recommend_jobs(
+    recommendations = recommend_jobs(
         user_profile,
         df,
         vectorizer,
         job_vectors
     )
 
+    user_profile["skills"] = list(user_profile["skills"])
+
     return {
         "profile": user_profile,
         # "predicted_salary": salary,
-        "recommendations": jobs,
-        "scores": scores
+        "recommendations": recommendations,
+        # "scores": scores
     }
