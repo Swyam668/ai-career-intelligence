@@ -477,6 +477,7 @@ def build_user_profile(resume_text):
 
     return {
         "job_title": extract_job_title(skills),
+        # default value of 0 if not 'edu' is not found
         "education_level": EDU_MAP.get(edu, 0),
         "industry": extract_industry(skills),
         "company_size": extract_company_size(resume_text),

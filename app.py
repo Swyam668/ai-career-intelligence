@@ -6,6 +6,8 @@ import ast
 import os
 from pipelines.inference import run_pipeline
 from utils.pdf_parser import extract_pdf_text
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 df = pd.read_csv("data/processed/jobs_processed.csv")
@@ -23,6 +25,13 @@ job_vectors = joblib.load(VECTOR_PATH)
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # or "*"
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ResumeRequest(BaseModel):
     resume_text: str
@@ -84,9 +93,6 @@ async def recommend_pdf(
     )
 
     return {
-    "candidate_profile": result["profile"],
-    "total_recommendations": len(
-        result["recommendations"]
-    ),
+    "profile": result["profile"],
     "recommendations": result["recommendations"]
 }

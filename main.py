@@ -6,7 +6,7 @@ import pdfplumber
 import ast
 
 df = pd.read_csv("data/processed/jobs_processed.csv")
-# reconversion to set
+# reconversion to set (because it gets converted to string when reextracting)
 df["extracted_skills"] = df["extracted_skills"].apply(ast.literal_eval)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

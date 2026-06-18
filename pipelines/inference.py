@@ -16,6 +16,7 @@ def run_pipeline(resume_text, df, vectorizer, job_vectors, model):
         job_vectors
     )
 
+    # to make it compatible with json formatting
     user_profile["skills"] = list(user_profile["skills"])
 
     return {
