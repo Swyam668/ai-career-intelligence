@@ -87,7 +87,13 @@ export default function DashboardPage() {
 
         {/* Content */}
         <div className="space-y-8">
+
           <ProfileCard
+            profile={analysis.profile}
+          />
+
+          <SalaryCard
+            result={analysis.salary}
             profile={analysis.profile}
           />
 
@@ -96,11 +102,7 @@ export default function DashboardPage() {
               analysis.recommendations
             }
           />
-
-          <SalaryCard
-            predictedSalary={analysis.predicted_salary}
-            profile={analysis.profile}
-          />
+          
         </div>
       </div>
     </main>

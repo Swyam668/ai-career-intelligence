@@ -65,13 +65,24 @@ def build_recommendations(
 
     return recommendations
 
+def build_user_recommendation_text(user_profile):
+    skills_text = " ".join(user_profile.get("skills", []))
+
+    return " ".join([
+        str(user_profile.get("job_title", "")),
+        str(user_profile.get("education_level", "")),
+        str(user_profile.get("industry", "")),
+        str(user_profile.get("experience_years", "")),
+        skills_text
+    ])
+
 
 def recommend_jobs(user_profile, df, vectorizer, job_vectors, top_n=50):
 
     # user_text = " ".join(list(user_profile["skills"]))
     user_skills = set(user_profile["skills"])
 
-    user_text = " ".join(user_skills)
+    user_text = build_user_recommendation_text(user_profile)
     
     user_vector = vectorizer.transform([user_text])
 
@@ -95,10 +106,13 @@ def recommend_jobs(user_profile, df, vectorizer, job_vectors, top_n=50):
             seen.add(key)
             unique_idx.append(idx)
 
+        if len(unique_idx) == top_n:
+            break
+
     recommendations = build_recommendations(
         user_skills,
         df,
-        top_idx,
+        unique_idx,
         scores[unique_idx]
     )
 

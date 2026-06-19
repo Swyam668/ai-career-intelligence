@@ -21,8 +21,22 @@ export interface Recommendation {
   missing_skills: string[];
 }
 
+export type SalaryExplanationItem = {
+  feature: string;
+  title: string;
+  message: string;
+  impact: number;
+  effect: "positive" | "negative";
+};
+
+export type SalaryResult = {
+  predicted_salary: number;
+  base_salary: number;
+  explanation: SalaryExplanationItem[];
+};
+
 export interface AnalysisResponse {
   profile: Profile;
   recommendations: Recommendation[];
-  predicted_salary: number;
+  salary: SalaryResult;
 }

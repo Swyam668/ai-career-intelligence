@@ -6,7 +6,10 @@ import pdfplumber
 import ast
 from sentence_transformers import SentenceTransformer
 import fitz
+from salary.shap_explainer import create_salary_explainer, explain_salary_prediction
+import sys
 
+sys.stdout.reconfigure(encoding="utf-8")
 
 df = pd.read_csv("data/processed/jobs_processed.csv")
 # reconversion to set (because it gets converted to string when reextracting)
@@ -21,11 +24,24 @@ job_vectors = joblib.load(VECTOR_PATH)
 SALARY_MODEL_PATH = os.path.join(BASE_DIR, "models", "salary_prediction_pipeline.pkl")
 
 
+
 vectorizer = joblib.load(MODEL_PATH)
 job_vectors = joblib.load(VECTOR_PATH)
 salary_model = joblib.load(SALARY_MODEL_PATH)
 
+# SHAP
+BACKGROUND_PATH = os.path.join(
+    BASE_DIR,
+    "data",
+    "processed",
+    "shap_background.csv"
+)
 
+def load_background_data():
+    return pd.read_csv(BACKGROUND_PATH)
+
+
+explainer = create_salary_explainer(salary_model)
 
 # not using this, better version is below
 # def extract_pdf_text(path):
@@ -63,10 +79,19 @@ result = run_pipeline(
     vectorizer,
     job_vectors,
     salary_model,
-    nlp_model
+    nlp_model,
+    explainer,
+    explain_salary_prediction
 )
 
-print(result["profile"])
-print(result["predicted_salary"])
-print(result["recommendations"])
-# print(result["scores"])
+# print(result["profile"])
+# print(result["predicted_salary"])
+# print(result["recommendations"])
+
+
+
+# print(result["predicted_salary"])
+# print(result["base_salary"])
+print(result["salary"]["predicted_salary"])
+print(result["salary"]["base_salary"])
+print(result["salary"]["explanation"])

@@ -7,8 +7,10 @@ import os
 from pipelines.inference import run_pipeline
 from utils.pdf_parser import extract_pdf_text
 from fastapi.middleware.cors import CORSMiddleware
+# NLP
 from sentence_transformers import SentenceTransformer
-
+# SHAP
+from salary.shap_explainer import create_salary_explainer, explain_salary_prediction
 
 df = pd.read_csv("data/processed/jobs_processed.csv")
 df["extracted_skills"] = df["extracted_skills"].apply(ast.literal_eval)
@@ -26,6 +28,23 @@ salary_model = joblib.load(SALARY_MODEL_PATH)
 nlp_model = SentenceTransformer(
     "all-MiniLM-L6-v2"
 )
+
+
+# SHAP
+BACKGROUND_PATH = os.path.join(
+    BASE_DIR,
+    "data",
+    "processed",
+    "shap_background.csv"
+)
+
+def load_background_data():
+    return pd.read_csv(BACKGROUND_PATH)
+
+
+explainer = create_salary_explainer(salary_model)
+
+
 
 app = FastAPI()
 
@@ -46,18 +65,18 @@ def home():
     return {"message": "API working"}
 
 
-@app.post("/recommend")
-def recommend(request: ResumeRequest):
+# @app.post("/recommend")
+# def recommend(request: ResumeRequest):
 
-    result = run_pipeline(
-        request.resume_text,
-        df,
-        vectorizer,
-        job_vectors,
-        None
-    )
+#     result = run_pipeline(
+#         request.resume_text,
+#         df,
+#         vectorizer,
+#         job_vectors,
+#         None
+#     )
 
-    return result
+#     return result
 
 # for debugging
 @app.post("/pdf-text")
@@ -94,11 +113,13 @@ async def recommend_pdf(
         vectorizer,
         job_vectors,
         salary_model,
-        nlp_model
+        nlp_model,
+        explainer,
+        explain_salary_prediction
     )
 
     return {
     "profile": result["profile"],
     "recommendations": result["recommendations"],
-    "predicted_salary": result["predicted_salary"]
+    "salary": result["salary"]
 }

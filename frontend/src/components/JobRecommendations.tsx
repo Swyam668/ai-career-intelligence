@@ -88,7 +88,7 @@ export default function JobRecommendations({
                 </p>
 
                 <p className="font-medium text-slate-200">
-                  {job.similarity_score.toFixed(4)}
+                  {(job.similarity_score * 100).toFixed(2)} %
                 </p>
               </div>
             </div>
