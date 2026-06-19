@@ -7,6 +7,7 @@ import { useAnalysis } from "@/context/AnalysisContext";
 
 import ProfileCard from "@/components/ProfileCard";
 import JobRecommendations from "@/components/JobRecommendations";
+import SalaryCard from "@/components/SalaryCard";
 
 export default function DashboardPage() {
   const { analysis } = useAnalysis();
@@ -94,6 +95,11 @@ export default function DashboardPage() {
             recommendations={
               analysis.recommendations
             }
+          />
+
+          <SalaryCard
+            predictedSalary={analysis.predicted_salary}
+            profile={analysis.profile}
           />
         </div>
       </div>
