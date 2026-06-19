@@ -20,4 +20,8 @@ def predict_salary(user_profile, model):
         "certifications": user_profile["certifications"]
     }])
 
-    return model.predict(input_df)[0]
+    predicted_salary = model.predict(input_df)[0]
+    predicted_salary = round(predicted_salary, 2)
+    predicted_salary_lpa = round(predicted_salary / 100000, 2)
+
+    return predicted_salary_lpa

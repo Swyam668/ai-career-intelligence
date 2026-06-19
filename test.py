@@ -12,7 +12,7 @@ sample = pd.DataFrame([{
     "education_level": "Bachelor",
     "industry": "Tech",
     "company_size": "Unknown",
-    "location": "Delhi",
+    "location": "Unknown",
     "remote_work": "Unknown",
     "experience_years": 5,
     "skills_count": 8,

@@ -4,6 +4,9 @@ from pipelines.inference import run_pipeline
 import os
 import pdfplumber
 import ast
+from sentence_transformers import SentenceTransformer
+import fitz
+
 
 df = pd.read_csv("data/processed/jobs_processed.csv")
 # reconversion to set (because it gets converted to string when reextracting)
@@ -24,27 +27,46 @@ salary_model = joblib.load(SALARY_MODEL_PATH)
 
 
 
-def extract_pdf_text(path):
+# not using this, better version is below
+# def extract_pdf_text(path):
+#     text = ""
+
+#     with pdfplumber.open(path) as pdf:
+#         for page in pdf.pages:
+#             text += page.extract_text() or ""
+
+#     return text
+
+
+def extract_text_from_pdf(pdf_path: str) -> str:
+
     text = ""
 
-    with pdfplumber.open(path) as pdf:
-        for page in pdf.pages:
-            text += page.extract_text() or ""
+    doc = fitz.open(pdf_path)
+
+    for page in doc:
+        text += page.get_text()
+
+    doc.close()
 
     return text
 
+resume_text = extract_text_from_pdf("docs/Resume2.pdf")
 
-resume_text = extract_pdf_text("docs/Resume.pdf")
+nlp_model = SentenceTransformer(
+    "all-MiniLM-L6-v2"
+)
 
 result = run_pipeline(
     resume_text,
     df,
     vectorizer,
     job_vectors,
-    salary_model
+    salary_model,
+    nlp_model
 )
 
 print(result["profile"])
-# print(result["predicted_salary"])
+print(result["predicted_salary"])
 print(result["recommendations"])
 # print(result["scores"])

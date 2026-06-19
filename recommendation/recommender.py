@@ -69,7 +69,7 @@ def build_recommendations(
 def recommend_jobs(user_profile, df, vectorizer, job_vectors, top_n=50):
 
     # user_text = " ".join(list(user_profile["skills"]))
-    user_skills = user_profile["skills"]
+    user_skills = set(user_profile["skills"])
 
     user_text = " ".join(user_skills)
     

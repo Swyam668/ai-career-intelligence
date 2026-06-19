@@ -24,4 +24,5 @@ export interface Recommendation {
 export interface AnalysisResponse {
   profile: Profile;
   recommendations: Recommendation[];
+  predicted_salary: number;
 }

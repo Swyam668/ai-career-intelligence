@@ -7,7 +7,7 @@ import os
 from pipelines.inference import run_pipeline
 from utils.pdf_parser import extract_pdf_text
 from fastapi.middleware.cors import CORSMiddleware
-
+from sentence_transformers import SentenceTransformer
 
 
 df = pd.read_csv("data/processed/jobs_processed.csv")
@@ -17,11 +17,15 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 MODEL_PATH = os.path.join(BASE_DIR, "models", "tfidf_vectorizer.pkl")
 VECTOR_PATH = os.path.join(BASE_DIR, "models", "job_vectors.pkl")
+SALARY_MODEL_PATH = os.path.join(BASE_DIR, "models", "salary_prediction_pipeline.pkl")
 
 vectorizer = joblib.load(MODEL_PATH)
 job_vectors = joblib.load(VECTOR_PATH)
+salary_model = joblib.load(SALARY_MODEL_PATH)
 
-
+nlp_model = SentenceTransformer(
+    "all-MiniLM-L6-v2"
+)
 
 app = FastAPI()
 
@@ -89,10 +93,12 @@ async def recommend_pdf(
         df,
         vectorizer,
         job_vectors,
-        None
+        salary_model,
+        nlp_model
     )
 
     return {
     "profile": result["profile"],
-    "recommendations": result["recommendations"]
+    "recommendations": result["recommendations"],
+    "predicted_salary": result["predicted_salary"]
 }

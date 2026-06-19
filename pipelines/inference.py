@@ -3,11 +3,12 @@ from salary.predictor import predict_salary
 from recommendation.recommender import recommend_jobs
 
 
-def run_pipeline(resume_text, df, vectorizer, job_vectors, model):
+def run_pipeline(resume_text, df, vectorizer, job_vectors, salary_model, nlp_model):
 
-    user_profile = build_user_profile(resume_text)
 
-    # salary = predict_salary(user_profile, model)
+    user_profile = build_user_profile(resume_text, nlp_model)
+
+    salary = predict_salary(user_profile, salary_model)
 
     recommendations = recommend_jobs(
         user_profile,
@@ -21,7 +22,7 @@ def run_pipeline(resume_text, df, vectorizer, job_vectors, model):
 
     return {
         "profile": user_profile,
-        # "predicted_salary": salary,
+        "predicted_salary": salary,
         "recommendations": recommendations,
         # "scores": scores
     }
