@@ -8,6 +8,7 @@ import { useAnalysis } from "@/context/AnalysisContext";
 import ProfileCard from "@/components/ProfileCard";
 import JobRecommendations from "@/components/JobRecommendations";
 import SalaryCard from "@/components/SalaryCard";
+import CareerRoadmap from "@/components/CareerRoadmap";
 
 export default function DashboardPage() {
   const { analysis } = useAnalysis();
@@ -103,6 +104,10 @@ export default function DashboardPage() {
             }
           />
           
+          {analysis?.career_roadmap && (
+            <CareerRoadmap roadmap={analysis.career_roadmap} />
+          )}
+
         </div>
       </div>
     </main>

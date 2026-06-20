@@ -121,5 +121,6 @@ async def recommend_pdf(
     return {
     "profile": result["profile"],
     "recommendations": result["recommendations"],
-    "salary": result["salary"]
+    "salary": result["salary"],
+    "career_roadmap": result["career_roadmap"]
 }

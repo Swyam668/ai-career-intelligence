@@ -35,8 +35,29 @@ export type SalaryResult = {
   explanation: SalaryExplanationItem[];
 };
 
+
+type RoadmapPhase = {
+  phase: string;
+  duration: string;
+  focus: string;
+  skills: string[];
+  action_items: string[];
+};
+
+type CareerRoadmap = {
+  target_role: string;
+  readiness_score: number;
+  current_strengths: string[];
+  priority_skills: string[];
+  estimated_timeline: string;
+  roadmap: RoadmapPhase[];
+  project_suggestions: string[];
+};
+
+
 export interface AnalysisResponse {
   profile: Profile;
   recommendations: Recommendation[];
   salary: SalaryResult;
+  career_roadmap: CareerRoadmap;
 }

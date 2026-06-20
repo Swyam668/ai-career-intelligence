@@ -86,7 +86,7 @@ result = run_pipeline(
 
 # print(result["profile"])
 # print(result["predicted_salary"])
-print(result["recommendations"])
+print(result["career_roadmap"])
 
 
 

@@ -2,6 +2,7 @@ from resume_parser.parser import build_user_profile
 from salary.predictor import predict_salary
 from recommendation.recommender import recommend_jobs
 from salary.shap_explainer import prepare_salary_input
+from roadmap_generator.roadmap_generator import generate_career_roadmap
 
 def run_pipeline(resume_text, df, vectorizer, job_vectors, salary_model, nlp_model, salary_explainer, explain_salary_prediction):
 
@@ -26,6 +27,10 @@ def run_pipeline(resume_text, df, vectorizer, job_vectors, salary_model, nlp_mod
         job_vectors
     )
     
+    career_roadmap = generate_career_roadmap(
+        user_profile=user_profile,
+        recommendations=recommendations
+    )
 
     # to make it compatible with json formatting
     user_profile["skills"] = list(user_profile["skills"])
@@ -36,6 +41,7 @@ def run_pipeline(resume_text, df, vectorizer, job_vectors, salary_model, nlp_mod
         "recommendations": recommendations,
         # "base_salary": salary_explanation["base_salary"],
         # "explanation": salary_explanation["explanation"]
-        "salary": salary_explanation
+        "salary": salary_explanation,
+        "career_roadmap": career_roadmap
         # "scores": scores
     }
