@@ -86,12 +86,12 @@ result = run_pipeline(
 
 # print(result["profile"])
 # print(result["predicted_salary"])
-# print(result["recommendations"])
+print(result["recommendations"])
 
 
 
 # print(result["predicted_salary"])
 # print(result["base_salary"])
-print(result["salary"]["predicted_salary"])
-print(result["salary"]["base_salary"])
-print(result["salary"]["explanation"])
+# print(result["salary"]["predicted_salary"])
+# print(result["salary"]["base_salary"])
+# print(result["salary"]["explanation"])
