@@ -59,5 +59,5 @@ export interface AnalysisResponse {
   profile: Profile;
   recommendations: Recommendation[];
   salary: SalaryResult;
-  career_roadmap: CareerRoadmap;
+  // career_roadmap: CareerRoadmap;
 }

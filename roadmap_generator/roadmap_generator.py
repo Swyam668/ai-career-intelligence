@@ -1,3 +1,13 @@
+import os
+import json
+from dotenv import load_dotenv
+from google import genai
+from google.genai import types
+
+
+load_dotenv()
+
+
 def get_top_recommendation(recommendations):
     if not recommendations:
         return None
@@ -239,7 +249,8 @@ def build_roadmap_context(user_profile, recommendations):
             "readiness_score": 0,
             "matched_skills": [],
             "missing_skills": [],
-            "user_skills": normalize_skills(user_profile.get("skills", []))
+            "user_skills": normalize_skills(user_profile.get("skills", [])),
+            "top_recommendation": None
         }
 
     target_role = (
@@ -254,7 +265,9 @@ def build_roadmap_context(user_profile, recommendations):
         "readiness_score": top_recommendation.get("match_percentage", 0),
         "matched_skills": normalize_skills(top_recommendation.get("matched_skills", [])),
         "missing_skills": normalize_skills(top_recommendation.get("missing_skills", [])),
-        "user_skills": normalize_skills(user_profile.get("skills", []))
+        "user_skills": normalize_skills(user_profile.get("skills", [])),
+        "candidate_profile": user_profile,
+        "top_recommendation": top_recommendation
     }
 
 
@@ -394,8 +407,118 @@ def generate_rule_based_roadmap(context):
         "project_suggestions": generate_project_suggestions(
             target_role=target_role,
             priority_skills=priority_skills
-        )
+        ),
+        "generation_mode": "rule_based"
     }
+
+
+def build_llm_prompt(context):
+    priority_skills = prioritize_missing_skills(
+        target_role=context["target_role"],
+        missing_skills=context["missing_skills"]
+    )
+
+    payload = {
+        "target_role": context["target_role"],
+        "readiness_score": context["readiness_score"],
+        "candidate_profile": {
+            "job_title": context.get("candidate_profile", {}).get("job_title"),
+            "education_level": context.get("candidate_profile", {}).get("education_level"),
+            "experience_years": context.get("candidate_profile", {}).get("experience_years"),
+            "skills": context["user_skills"],
+            "certifications": context.get("candidate_profile", {}).get("certifications")
+        },
+        "job_match": {
+            "matched_skills": context["matched_skills"],
+            "missing_skills": context["missing_skills"],
+            "priority_skills": priority_skills,
+            "top_recommendation": context.get("top_recommendation")
+        }
+    }
+
+    return f"""
+You are an AI career roadmap generator.
+
+Create a personalized career roadmap using ONLY the candidate profile and job recommendation context below.
+
+Candidate and job context:
+{json.dumps(payload, indent=2)}
+
+Return ONLY valid JSON.
+Do not include markdown.
+Do not include explanation outside JSON.
+
+Required JSON structure:
+{{
+  "target_role": "string",
+  "readiness_score": number,
+  "current_strengths": ["string"],
+  "priority_skills": ["string"],
+  "estimated_timeline": "string",
+  "roadmap": [
+    {{
+      "phase": "string",
+      "duration": "string",
+      "focus": "string",
+      "skills": ["string"],
+      "action_items": ["string"]
+    }}
+  ],
+  "project_suggestions": ["string"],
+  "interview_preparation": ["string"],
+  "learning_strategy": ["string"],
+  "generation_mode": "llm"
+}}
+
+Rules:
+- Make the roadmap practical for a student or fresher.
+- Prefer 3 to 4 phases.
+- Use the missing skills as the main learning priorities.
+- Do not invent unrealistic experience.
+- Keep action items concrete and portfolio-oriented.
+- Project suggestions should be strong enough for internship/job applications.
+"""
+
+
+def parse_llm_json(text):
+    cleaned = text.strip()
+
+    if cleaned.startswith("```json"):
+        cleaned = cleaned.replace("```json", "", 1).strip()
+
+    if cleaned.startswith("```"):
+        cleaned = cleaned.replace("```", "", 1).strip()
+
+    if cleaned.endswith("```"):
+        cleaned = cleaned[:-3].strip()
+
+    return json.loads(cleaned)
+
+
+def generate_llm_roadmap(context):
+    api_key = os.getenv("GEMINI_API_KEY")
+    model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY is missing from environment variables.")
+
+    client = genai.Client(api_key=api_key)
+
+    prompt = build_llm_prompt(context)
+
+    response = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            temperature=0.4,
+            response_mime_type="application/json"
+        )
+    )
+
+    roadmap = parse_llm_json(response.text)
+    roadmap["generation_mode"] = "llm"
+
+    return roadmap
 
 
 def generate_career_roadmap(user_profile, recommendations, mode="rule_based"):
@@ -406,5 +529,14 @@ def generate_career_roadmap(user_profile, recommendations, mode="rule_based"):
 
     if mode == "rule_based":
         return generate_rule_based_roadmap(context)
+
+    if mode == "llm":
+        try:
+            return generate_llm_roadmap(context)
+        except Exception as error:
+            fallback = generate_rule_based_roadmap(context)
+            fallback["generation_mode"] = "rule_based_fallback"
+            fallback["llm_error"] = str(error)
+            return fallback
 
     raise ValueError(f"Unsupported roadmap generation mode: {mode}")

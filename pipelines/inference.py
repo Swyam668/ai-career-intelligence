@@ -27,10 +27,11 @@ def run_pipeline(resume_text, df, vectorizer, job_vectors, salary_model, nlp_mod
         job_vectors
     )
     
-    career_roadmap = generate_career_roadmap(
-        user_profile=user_profile,
-        recommendations=recommendations
-    )
+    # career_roadmap = generate_career_roadmap(
+    #     user_profile=user_profile,
+    #     recommendations=recommendations,
+    #     mode="llm"
+    # )
 
     # to make it compatible with json formatting
     user_profile["skills"] = list(user_profile["skills"])
@@ -42,6 +43,6 @@ def run_pipeline(resume_text, df, vectorizer, job_vectors, salary_model, nlp_mod
         # "base_salary": salary_explanation["base_salary"],
         # "explanation": salary_explanation["explanation"]
         "salary": salary_explanation,
-        "career_roadmap": career_roadmap
+        # "career_roadmap": career_roadmap
         # "scores": scores
     }

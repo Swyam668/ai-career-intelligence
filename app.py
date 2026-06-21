@@ -12,6 +12,11 @@ from sentence_transformers import SentenceTransformer
 # SHAP
 from salary.shap_explainer import create_salary_explainer, explain_salary_prediction
 
+#ROADMAP GEN
+from roadmap_generator.roadmap_generator import generate_career_roadmap
+from typing import List, Dict, Any
+
+
 df = pd.read_csv("data/processed/jobs_processed.csv")
 df["extracted_skills"] = df["extracted_skills"].apply(ast.literal_eval)
 
@@ -50,7 +55,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # or "*"
+    allow_origins=["http://localhost:3000",
+        "http://127.0.0.1:3000"],  # or "*"
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -122,5 +128,29 @@ async def recommend_pdf(
     "profile": result["profile"],
     "recommendations": result["recommendations"],
     "salary": result["salary"],
-    "career_roadmap": result["career_roadmap"]
+    # "career_roadmap": result["career_roadmap"]
 }
+
+
+
+class RoadmapRequest(BaseModel):
+    profile: Dict[str, Any]
+    recommendations: List[Dict[str, Any]]
+
+@app.post("/generate-roadmap")
+async def generate_roadmap(request: RoadmapRequest):
+    # print("Roadmap route hit")
+    # print("Profile:", request.profile)
+    # print("Recommendations count:", len(request.recommendations))
+
+    roadmap = generate_career_roadmap(
+        user_profile=request.profile,
+        recommendations=request.recommendations,
+        mode="llm"
+    )
+
+    # print("Generated roadmap:", roadmap)
+
+    return {
+        "roadmap": roadmap
+    }
