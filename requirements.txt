@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pandas
+numpy
+scikit-learn
+joblib
+pdfplumber
+sentence-transformers
+shap
+requests
+python-dotenv
+google-genai
+pydantic
+PyMuPDF

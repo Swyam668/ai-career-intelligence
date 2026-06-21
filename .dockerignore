@@ -1,0 +1,15 @@
+__pycache__
+*.pyc
+.env
+.venv
+venv
+env
+.git
+.gitignore
+.ipynb_checkpoints
+experiments
+notebooks
+node_modules
+.next
+docs
+frontend
