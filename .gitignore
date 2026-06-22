@@ -1,6 +1,5 @@
 # Datasets
 data/raw/
-data/processed/
 
 # CSV files
 *.csv
