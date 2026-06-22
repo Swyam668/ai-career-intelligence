@@ -28,7 +28,7 @@ export default function RoadmapPage() {
         recommendations: analysis.recommendations,
       });
 
-      const res = await fetch("http://localhost:8000/generate-roadmap", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/generate-roadmap`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
