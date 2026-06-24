@@ -278,42 +278,6 @@ Next.js Dashboard
 
 ---
 
-## Screenshots
-
-Add screenshots inside a `docs/screenshots/` folder and update the paths below.
-
-### Resume Upload
-
-```md
-![Resume Upload](docs/screenshots/resume-upload.png)
-```
-
-### Candidate Dashboard
-
-```md
-![Dashboard](docs/screenshots/dashboard.png)
-```
-
-### Job Recommendations
-
-```md
-![Recommendations](docs/screenshots/recommendations.png)
-```
-
-### Salary Prediction and SHAP Explanation
-
-```md
-![Salary Prediction](docs/screenshots/salary.png)
-```
-
-### AI Career Roadmap
-
-```md
-![Career Roadmap](docs/screenshots/roadmap.png)
-```
-
----
-
 ## Folder Structure
 
 ```text
