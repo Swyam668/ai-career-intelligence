@@ -201,6 +201,20 @@ flowchart TD
     K --> M
     L --> M
 ```
+## Architecture and Design Tradeoffs
+
+The project follows a modular full-stack AI architecture where the frontend, backend APIs, ML models, explainability layer, and LLM-based roadmap generator are separated into independent components. The Next.js frontend handles user interaction and dashboard rendering, while the FastAPI backend manages resume upload, text extraction, profile generation, job recommendation, salary prediction, SHAP explanations, and roadmap generation.
+
+A key design decision was to keep ML inference inside the backend instead of running it on the frontend. This keeps model files, preprocessing logic, and API keys secure while making the frontend lightweight and easier to deploy. The backend returns structured JSON responses, which makes the system easier to integrate with different clients in the future.
+
+For job recommendation, the project uses similarity-based matching because it is fast, interpretable, and suitable for a portfolio-scale system. The tradeoff is that TF-IDF and basic similarity methods may miss deeper semantic meaning compared to transformer-based retrieval. Sentence Transformers can improve semantic matching, but they increase model size, inference cost, and deployment complexity.
+
+For salary prediction, Linear Regression was selected because it performed strongly on the structured dataset while remaining fast and explainable. More complex models like Random Forest or Gradient Boosting could capture non-linear patterns, but they were slower and less transparent. Since the project also uses SHAP explanations, interpretability was prioritized over unnecessary model complexity.
+
+The roadmap generator uses an LLM to produce personalized career guidance. This makes the output more flexible and human-like, but it introduces dependency on an external API, possible latency, and occasional inconsistency. To reduce this risk, the system can use fallback rule-based roadmap logic when the LLM is unavailable.
+
+Overall, the architecture prioritizes practical deployment, explainability, modularity, and end-to-end usability over building the most complex possible ML system.
+
 
 ---
 
@@ -443,5 +457,3 @@ GitHub: https://github.com/Swyam668
 ## License
 
 This project is for educational and portfolio purposes.
-
-Add a license file if you want others to use or contribute to the project.
