@@ -23,12 +23,18 @@ export default function RoadmapPage() {
       setLoading(true);
       setError("");
 
-      console.log("Sending roadmap request:", {
-        profile: analysis.profile,
-        recommendations: analysis.recommendations,
-      });
+    //   console.log("Sending roadmap request:", {
+    //     profile: analysis.profile,
+    //     recommendations: analysis.recommendations,
+    //   });
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/generate-roadmap`, {
+
+    //   console.log(
+    //   "LOCAL API:",
+    //   process.env.NEXT_PUBLIC_API_URL_LOCAL
+    // );
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_LOCAL}/generate-roadmap`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +118,7 @@ export default function RoadmapPage() {
           <button
             onClick={generateRoadmap}
             disabled={loading}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-4 font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_35px_rgba(16,185,129,0.45)] disabled:cursor-not-allowed disabled:opacity-60"
+            className="group relative overflow-hidden rounded-2xl bg-linear-to-r from-emerald-500 to-teal-500 px-8 py-4 font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_35px_rgba(16,185,129,0.45)] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <span className="relative z-10">
               {loading ? "Generating..." : "Generate Career Roadmap"}

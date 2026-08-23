@@ -7,11 +7,11 @@ import { AnalysisResponse } from "@/types";
 
 // explains shape of props passed to this component
 interface ResumeUploadProps {
-  onSuccess: (data: any) => void;
+  onSuccess: (data: AnalysisResponse) => void;
 }
 
 export default function ResumeUpload({
-  onSuccess,
+  onSuccess, // destructuring
 }: ResumeUploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -47,7 +47,8 @@ export default function ResumeUpload({
 
       formData.append("file", file);
 
-      const response = await api.post(
+      // response is of type AnalysisResponse --> to let typescript know
+      const response = await api.post<AnalysisResponse>(
         "/recommend-pdf",
         formData,
         {
@@ -115,6 +116,7 @@ export default function ResumeUpload({
         <input
           id="resume"
           type="file"
+          // suggesting only pdf in explorer
           accept=".pdf"
           className="hidden"
           onChange={handleFileChange}

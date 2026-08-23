@@ -14,6 +14,7 @@ export default function DashboardLayout({
   const { analysis } = useAnalysis();
   const router = useRouter();
 
+  // to redirect users who are accessing dashboard routes without analysis data
   useEffect(() => {
     if (!analysis) {
       router.replace("/");

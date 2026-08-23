@@ -13,14 +13,13 @@ job_vectors = joblib.load(VECTOR_PATH)
 
 
 def ensure_skill_set(skills):
-    """
-    Converts extracted_skills into a clean Python set.
-    Handles set, list, tuple, stringified list/set, and empty values.
-    """
+    # Converts extracted_skills into a clean Python set
+    # Handles set, list, tuple, stringified list/set, and empty values
 
     if skills is None:
         return set()
 
+    # handling in case, skills are in different format, for example say in CSV (its a string)
     if isinstance(skills, set):
         return {str(skill).lower().strip() for skill in skills}
 
@@ -29,6 +28,7 @@ def ensure_skill_set(skills):
 
     if isinstance(skills, str):
         try:
+            # conversion to actual python ds
             parsed = ast.literal_eval(skills)
 
             if isinstance(parsed, set) or isinstance(parsed, list) or isinstance(parsed, tuple):

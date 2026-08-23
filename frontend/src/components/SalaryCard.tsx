@@ -12,6 +12,8 @@ type SalaryCardProps = {
 
 
 function formatCurrency(value: number) {
+  // indian currency formatting
+  // Intl - Internationalization js object
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -107,10 +109,6 @@ export default function SalaryCard({
         </div>
       </div>
 
-      <p className="relative mt-5 text-xs leading-relaxed text-slate-500">
-        Explanations are based on patterns learned from the training dataset
-        and should be treated as estimates.
-      </p>
     </section>
   )}
 </div>

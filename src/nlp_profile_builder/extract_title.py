@@ -19,7 +19,7 @@ KNOWN_ROLES = [
 
 def extract_title(resume_text: str, model, known_roles=None) -> dict:
     """
-    Extract the most likely target job title from resume text.
+    Extract the most likely target job title from resume text
     """
 
     if known_roles is None:
@@ -43,6 +43,7 @@ def extract_title(resume_text: str, model, known_roles=None) -> dict:
 
     scores = util.cos_sim(resume_embedding, role_embeddings)[0]
 
+    # tensor to python item
     best_idx = scores.argmax().item()
     best_score = scores[best_idx].item()
 

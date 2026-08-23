@@ -15,7 +15,7 @@ def extract_explicit_experience(text: str):
     for pattern in patterns:
         match = re.search(pattern, text)
         if match:
-            return int(match.group(1))
+            return int(match.group(1)) # first captured group -- numerical years of exp
 
     return None
 

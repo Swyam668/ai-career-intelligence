@@ -64,6 +64,7 @@ def create_salary_explainer(lr_pipeline):
     model = lr_pipeline.named_steps["model"]
 
     background_df = load_background_data()
+    # SHAP performs better on transformed data
     background_transformed = preprocessor.transform(background_df)
 
     masker = shap.maskers.Independent(
@@ -81,12 +82,8 @@ def create_salary_explainer(lr_pipeline):
 
 # for inference.py
 def clean_feature_name(feature):
-    """
-    Removes ColumnTransformer prefixes if present.
-    Example:
-    cat__location_India - location_India
-    num__experience_years - experience_years
-    """
+    # to remove ColumnTransformer prefixes.
+    
     if "__" in feature:
         return feature.split("__", 1)[1]
     return feature
@@ -109,7 +106,7 @@ def format_salary_explanation(shap_values, feature_names, input_df):
     for feature in numeric_features:
         active_features.add(feature)
 
-    # categorical active one-hot features
+    # categorical active one-hot features (remove inactive ones -- clean it)
     categorical_features = [
         "job_title",
         "education_level",
@@ -150,18 +147,7 @@ def format_salary_explanation(shap_values, feature_names, input_df):
 
 
 
-##################### HUMANIZE THE FORMAT ########################
 def humanize_feature_label(feature):
-    """
-    Converts raw SHAP feature names into readable labels.
-
-    Examples:
-    location_India -> Location: India
-    job_title_Machine Learning Engineer -> Job Title: Machine Learning Engineer
-    experience_years -> Experience
-    skills_count -> Skills Count
-    certifications -> Certifications
-    """
 
     direct_labels = {
         "experience_years": "Experience",
@@ -186,15 +172,13 @@ def humanize_feature_label(feature):
             value = feature.replace(prefix, "", 1)
             return f"{label}: {value}"
 
+    # fallback
     return feature.replace("_", " ").title()
 
 
 
 def humanize_impact_message(feature, impact):
-    """
-    Converts SHAP impact into a readable sentence.
-    """
-
+    # Converts SHAP impact into a readable sentence
     amount = abs(round(float(impact)))
 
     if impact > 0:
@@ -233,9 +217,7 @@ def humanize_impact_message(feature, impact):
 
 
 def humanize_salary_explanation(explanation):
-    """
-    Converts raw SHAP explanation list into frontend-friendly explanation list.
-    """
+    # Converts raw SHAP explanation list into structured json explanation list
 
     humanized = []
 
@@ -264,16 +246,6 @@ def humanize_salary_explanation(explanation):
 
 
 def explain_salary_prediction(lr_pipeline, explainer, input_df):
-    """
-    Explains one salary prediction using SHAP.
-
-    Args:
-        lr_pipeline: trained salary prediction pipeline
-        input_df: single-row dataframe used for prediction
-
-    Returns:
-        dict with prediction and SHAP explanation
-    """
 
     preprocessor = lr_pipeline.named_steps["preprocessor"]
 

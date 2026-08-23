@@ -278,10 +278,12 @@ def prioritize_missing_skills(target_role, missing_skills):
 
     priority_skills = []
 
+    # necessary missing skills
     for skill in priority_list:
         if skill in missing_skills:
             priority_skills.append(skill)
 
+    # skills which were already missing (compared from dataset)
     for skill in missing_skills:
         if skill not in priority_skills:
             priority_skills.append(skill)
@@ -384,8 +386,6 @@ def generate_rule_based_roadmap(context):
 
     needed_phases = detect_needed_phases(priority_skills)
 
-    if not needed_phases:
-        needed_phases = ["ml_foundations", "deployment"]
 
     roadmap = []
 
@@ -439,12 +439,12 @@ def build_llm_prompt(context):
     return f"""
 You are an AI career roadmap generator.
 
-Create a personalized career roadmap using ONLY the candidate profile and job recommendation context below.
+Create a personalized career roadmap using only the candidate profile and job recommendation context below.
 
 Candidate and job context:
 {json.dumps(payload, indent=2)}
 
-Return ONLY valid JSON.
+Return only valid JSON.
 Do not include markdown.
 Do not include explanation outside JSON.
 
@@ -484,6 +484,7 @@ def parse_llm_json(text):
     cleaned = text.strip()
 
     if cleaned.startswith("```json"):
+        # 1 -> only one replacement
         cleaned = cleaned.replace("```json", "", 1).strip()
 
     if cleaned.startswith("```"):
@@ -492,6 +493,7 @@ def parse_llm_json(text):
     if cleaned.endswith("```"):
         cleaned = cleaned[:-3].strip()
 
+    # json object to python dictionary 
     return json.loads(cleaned)
 
 
@@ -510,7 +512,9 @@ def generate_llm_roadmap(context):
         model=model_name,
         contents=prompt,
         config=types.GenerateContentConfig(
+            # creativity or randomness in output
             temperature=0.4,
+            # to tell the model to return response as json
             response_mime_type="application/json"
         )
     )

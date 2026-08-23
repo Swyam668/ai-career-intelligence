@@ -164,7 +164,7 @@ export default function CareerRoadmap({ roadmap }: CareerRoadmapProps) {
       </div>
 
       {roadmap.project_suggestions?.length > 0 && (
-        <div className="mt-8 rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-blue-500/10 p-5 backdrop-blur-sm">
+        <div className="mt-8 rounded-2xl border border-violet-500/20 bg-linear-to-br from-violet-500/10 to-blue-500/10 p-5 backdrop-blur-sm">
           <h3 className="font-semibold text-violet-300">
             Suggested Portfolio Projects
           </h3>

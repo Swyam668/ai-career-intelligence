@@ -3,6 +3,9 @@ import re
 
 EDUCATION_PATTERNS = [
     ("PhD", [
+        # r -> raw string
+        # b -> word boundary (because we want to match these words separately)
+        # \. is treated as literal dot
         r"\bph\.?d\b",
         r"\bdoctorate\b",
     ]),

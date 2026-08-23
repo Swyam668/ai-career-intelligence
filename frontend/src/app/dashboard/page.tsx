@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const topMatch =
     analysis.recommendations.length > 0
       ? Math.max(
+        // spread syntax to dissemble array and pass individually to Mathmax function
           ...analysis.recommendations.map(
             (job) => job.match_percentage
           )

@@ -2,6 +2,7 @@
 
 import ResumeUpload from "@/components/ResumeUpload";
 import { useAnalysis } from "@/context/AnalysisContext";
+import { AnalysisResponse } from "@/types";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -9,7 +10,7 @@ export default function Home() {
   const { setAnalysis } = useAnalysis();
   const router = useRouter();
 
-  const handleSuccess = (data: any) => {
+  const handleSuccess = (data: AnalysisResponse) => {
     setAnalysis(data);
 
     router.push("/dashboard");

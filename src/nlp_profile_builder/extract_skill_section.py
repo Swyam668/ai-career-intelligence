@@ -26,16 +26,20 @@ def extract_candidates(resume_text):
 
     import re
 
+    # splitting all skills from skills section 
     candidates = re.split(
         r"[,|\n|•]",
         skills_section
     )
 
+    valid_single_skills = {"c", "r"}
+
     # cleaning
     candidates = [
         c.strip()
         for c in candidates
-        if len(c.strip()) > 1
+        # removing garbage values
+        if len(c.strip()) > 1 or c.strip().lower() in valid_single_skills
     ]
 
     return candidates
