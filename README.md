@@ -19,7 +19,9 @@ This project is built as a production-style AI/ML application with a FastAPI bac
 ## Live Demo
 
 **Frontend:** https://ai-career-intelligence-alpha.vercel.app
-**Backend API:** Add your Hugging Face Space API link here
+
+**Backend API:** https://huggingface.co/spaces/HansCapon/ai-career-intelligence-api/settings
+
 **GitHub:** https://github.com/Swyam668/ai-career-intelligence
 
 ---
@@ -53,6 +55,20 @@ The system extracts useful information from uploaded resumes, including:
 * Candidate attributes required for ML models
 
 The resume parsing pipeline uses NLP-based processing and structured feature extraction to convert raw resume text into a machine-readable candidate profile.
+
+---
+
+### Redis Caching and Performance
+
+Redis is used as an in-memory caching layer for repeated API requests. Frequently requested results are cached to avoid redundant ML/AI inference and computation.
+
+Benchmark results for repeated requests:
+
+| Metric | Before Redis | After Redis |
+| ------ | ------------ | ----------- |
+| Response Latency | 19.8s | 5ms |
+
+This reduced repeated-request latency from **19.8 seconds to 5 milliseconds (~3,9× faster)** by serving cached results instead of recomputing them.
 
 ---
 
@@ -139,6 +155,7 @@ The roadmap helps users understand what to learn next and how to move closer to 
 
 * Python
 * FastAPI
+* Redis
 * Scikit-learn
 * Sentence Transformers
 * SHAP
