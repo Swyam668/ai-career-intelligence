@@ -1,3 +1,13 @@
+---
+title: AI Career Intelligence API
+emoji: 🚀
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+---
+
+
 # AI Career Intelligence Platform
 
 An end-to-end AI-powered career analytics platform that analyzes resumes, recommends suitable job roles, predicts salary, explains salary decisions using SHAP, identifies skill gaps, and generates personalized career roadmaps using LLMs.
