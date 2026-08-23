@@ -34,7 +34,7 @@ export default function RoadmapPage() {
     //   process.env.NEXT_PUBLIC_API_URL_LOCAL
     // );
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_LOCAL}/generate-roadmap`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/generate-roadmap`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
